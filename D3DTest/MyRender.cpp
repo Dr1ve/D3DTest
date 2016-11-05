@@ -51,21 +51,21 @@ bool MyRender::Init()
 	m_cam.SetPosition(0.0f, 5.0f, 0.0f);
 	
 	m_WhiteFishka = new StaticMesh(this);
-	if (!m_WhiteFishka->Init(L"OBJ/BlackFishka.obj", L"OBJ/WhiteFishka.bmp"))
+	if (!m_WhiteFishka->Init(L"Objects/BlackFishka.obj", L"Objects/WhiteFishka.bmp"))
 	{
 		Log::Get()->Err("Ќе смог инициализировать модель с текстурой, myrender.cpp");
 		return false;
 	}
 
 	m_BlackFishka = new StaticMesh(this);
-	if (!m_BlackFishka->Init(L"OBJ/BlackFishka.obj", L"OBJ/BlackFishka.bmp"))
+	if (!m_BlackFishka->Init(L"Objects/BlackFishka.obj", L"Objects/BlackFishka.bmp"))
 	{
 		Log::Get()->Err("Ќе смог инициализировать модель с текстурой, myrender.cpp");
 		return false;
 	}
 
 	m_CheesBoard = new StaticMesh(this);
-	if (!m_CheesBoard->Init(L"OBJ/CheesBoard.obj", L"OBJ/CheesBoard.bmp"))
+	if (!m_CheesBoard->Init(L"Objects/CheesBoard.obj", L"Objects/CheesBoard.bmp"))
 	{
 		Log::Get()->Err("Ќе смог инициализировать модель с текстурой, myrender.cpp");
 		return false;
