@@ -104,7 +104,7 @@ CHAR g_strUIEffectFile[] = \
 "}";
 const UINT g_uUIEffectFileSize = sizeof(g_strUIEffectFile);
 
-class Dialog;
+//class Dialog;
 
 struct DXUT_SCREEN_VERTEX_10
 {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Dialog.h"
 #include "BaseControl.h"
 
 //-------------------------------------------------------------------

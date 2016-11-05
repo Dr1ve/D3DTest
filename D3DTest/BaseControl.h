@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Misc.h"
-#include "Dialog.h"
+//#include "Dialog.h"
 #include "Element.h"
 
 class Dialog;
