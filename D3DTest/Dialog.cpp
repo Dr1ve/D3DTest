@@ -1,4 +1,5 @@
-#include "Dialog.h"
+//#include "Dialog.h"
+#include "Button.h"
 
 void DrawText11DXUT(ID3D11Device *pd3dDevice, ID3D11DeviceContext *pd3d11DeviceContext,
 	LPCWSTR strText, RECT rcScreen, D3DXCOLOR vFontColor,

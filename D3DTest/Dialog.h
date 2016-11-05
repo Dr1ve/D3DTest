@@ -7,7 +7,7 @@
 #include "Static.h"
 #include "Button.h"
 
-class Control;
+//class Control;
 class Static;
 class Button;
 

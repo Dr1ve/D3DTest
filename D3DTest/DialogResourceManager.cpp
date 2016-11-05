@@ -1,4 +1,5 @@
 #include "DialogResourceManager.h"
+//#include "Dialog.h"
 
 DialogResourceManager::DialogResourceManager()
 {
