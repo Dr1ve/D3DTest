@@ -58,7 +58,7 @@ build/
 *_p.c
 *.ilk
 *.meta
-*.obj
+#*.obj
 *.pch
 *.pdb
 *.pgc
@@ -77,6 +77,7 @@ build/
 *.pidb
 *.log
 *.scc
+*.VC.db
 
 # Visual C++ cache files
 ipch/
