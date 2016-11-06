@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Dialog.h"
+// #include "Dialog.h"
 #include "BaseControl.h"
+
+class Dialog;
 
 //-------------------------------------------------------------------
 // Ёлемент управлени€ Static
