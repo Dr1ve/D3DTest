@@ -1,5 +1,4 @@
 #include "DialogResourceManager.h"
-//#include "Dialog.h"
 
 CHAR g_strUIEffectFile[] = \
 "Texture2D g_Texture;"\
@@ -145,7 +144,7 @@ bool DialogResourceManager::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
 	return false;
 }
 
-HRESULT DialogResourceManager::OnD3D11CreateDevice(ID3D11Device * pd3dDevice, ID3D11DeviceContext * pd3d11DeviceContext)
+HRESULT DialogResourceManager::OnD3D11CreateDevice(ID3D11Device *pd3dDevice, ID3D11DeviceContext *pd3d11DeviceContext)
 {
 	m_pd3d11Device = pd3dDevice;
 	m_pd3d11DeviceContext = pd3d11DeviceContext;

@@ -7,6 +7,10 @@ void DrawText11DXUT(ID3D11Device *pd3dDevice, ID3D11DeviceContext *pd3d11DeviceC
 void EndText11(ID3D11Device *pd3dDevice, ID3D11DeviceContext *pd3d11DeviceContext);
 void BeginText11();
 
+double Dialog::s_fTimeRefresh = 0.0f;
+Control *Dialog::s_pControlFocus = NULL; // Элемент в фокусе
+Control *Dialog::s_pControlPressed = NULL; // Нажатый элемент
+
 Dialog::Dialog()
 {
 	m_x = m_y = 0;
@@ -1029,6 +1033,45 @@ HRESULT Dialog::AddStatic(int ID, LPCWSTR strText, int x, int y, int width, int 
 	pStatic->SetLocation(x, y);
 	pStatic->SetSize(width, height);
 	pStatic->m_bIsDefault = bIsDefault;
+
+	return S_OK;
+}
+
+HRESULT Dialog::AddControl(Control * pControl)
+{
+	HRESULT hr = S_OK;
+
+	hr = InitControl(pControl);
+	if (FAILED(hr))
+		return hr;
+
+	// Добавляем элемент в список
+	hr = m_Controls.Add(pControl);
+	if (FAILED(hr))
+		return hr;
+
+	return S_OK;
+}
+
+HRESULT Dialog::InitControl(Control * pControl)
+{
+	HRESULT hr;
+
+	if (pControl == NULL)
+		return E_INVALIDARG;
+
+	pControl->m_Index = m_Controls.GetSize();
+
+	for (int i = 0; i < m_DefaultElements.GetSize(); i++)
+	{
+		ElementHolder *pElementHolder = m_DefaultElements.GetAt(i);
+		if (pElementHolder->nControlType == pControl->GetType())
+			pControl->SetElement(pElementHolder->iElement, &pElementHolder->Element);
+	}
+
+	hr = pControl->OnInit();
+	if (FAILED(hr))
+		return hr;
 
 	return S_OK;
 }
