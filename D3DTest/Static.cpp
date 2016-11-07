@@ -1,4 +1,5 @@
 #include "Static.h"
+#include "Dialog.h"
 
 Static::Static(Dialog *pDialog)
 {

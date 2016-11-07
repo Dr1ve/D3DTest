@@ -1,13 +1,13 @@
 #pragma once
 
 #include "Misc.h"
-#include "BaseControl.h"
+// #include "BaseControl.h"
 #include "Element.h"
 #include "DialogResourceManager.h"
-#include "Static.h"
-#include "Button.h"
+// #include "Static.h"
+// #include "Button.h"
 
-//class Control;
+class Control;
 class Static;
 class Button;
 
@@ -24,7 +24,7 @@ struct ElementHolder
 	Element Element;
 };
 
-D3DCOLORVALUE D3DCOLOR_TO_D3DCOLORVALUE(D3DCOLOR c)
+inline D3DCOLORVALUE D3DCOLOR_TO_D3DCOLORVALUE(D3DCOLOR c)
 {
 	D3DCOLORVALUE cv =
 	{

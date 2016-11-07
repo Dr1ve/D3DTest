@@ -1008,6 +1008,7 @@ bool Dialog::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	default:
 		break;
 	}
+	return bHandled;
 }
 
 HRESULT Dialog::AddStatic(int ID, LPCWSTR strText, int x, int y, int width, int height, bool bIsDefault, Static ** ppCreated)
