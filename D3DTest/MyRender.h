@@ -7,6 +7,9 @@
 #include "Camera.h"
 #include "Frustum.h"
 #include "NetworkClass.h"
+#include "DialogResourceManager.h"
+#include "Dialog.h"
+
 
 using namespace D3D11Framework;
 
@@ -53,4 +56,7 @@ private:
 	NetworkClass *m_Network;
 
 	bool m_CloseApp;
+
+	Dialog m_HUD;
+	DialogResourceManager m_DialogResourceManager;
 };

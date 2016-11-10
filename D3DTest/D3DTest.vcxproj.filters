@@ -136,6 +136,5 @@
     <None Include="BitmapFont.ps">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

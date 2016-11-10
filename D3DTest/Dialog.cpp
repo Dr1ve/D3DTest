@@ -1037,6 +1037,32 @@ HRESULT Dialog::AddStatic(int ID, LPCWSTR strText, int x, int y, int width, int 
 	return S_OK;
 }
 
+HRESULT Dialog::AddButton(int ID, LPCWSTR strText, int x, int y, int width, int height, UINT nHotkey, bool bIsDefault, Button ** ppCreated)
+{
+	HRESULT hr = S_OK;
+
+	Button *pButton = new Button(this);
+
+	if (ppCreated != NULL)
+		*ppCreated = pButton;
+
+	if (pButton == NULL)
+		return E_OUTOFMEMORY;
+
+	hr = AddControl(pButton);
+	if (FAILED(hr))
+		return hr;
+
+	pButton->SetID(ID);
+	pButton->SetText(strText);
+	pButton->SetLocation(x, y);
+	pButton->SetSize(width, height);
+	pButton->SetHotkey(nHotkey);
+	pButton->m_bIsDefault = bIsDefault;
+
+	return S_OK;
+}
+
 HRESULT Dialog::AddControl(Control * pControl)
 {
 	HRESULT hr = S_OK;

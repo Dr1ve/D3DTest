@@ -220,7 +220,6 @@
   <ItemGroup>
     <None Include="BitmapFont.ps" />
     <None Include="BitmapFont.vs" />
-    <None Include="ClassDiagram.cd" />
     <None Include="image.ps" />
     <None Include="image.vs" />
   </ItemGroup>

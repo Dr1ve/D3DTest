@@ -24,6 +24,23 @@ MyRender::MyRender()
 
 bool MyRender::Init()
 {
+	m_HUD.Init(&m_DialogResourceManager);
+	if (FAILED(m_DialogResourceManager.OnD3D11CreateDevice(m_pd3dDevice, m_pImmediateContext)))
+	{
+		return false;
+	}
+	
+	m_HUD.AddButton(1, L"Toggle full screen", 0, 0, 170, 50);
+	DXGI_SURFACE_DESC pBackBufferSurfaceDesc;
+	pBackBufferSurfaceDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	pBackBufferSurfaceDesc.Height = m_height;
+	pBackBufferSurfaceDesc.Width = m_width;
+	pBackBufferSurfaceDesc.SampleDesc.Count = 1;
+	pBackBufferSurfaceDesc.SampleDesc.Quality = 0;
+	m_DialogResourceManager.OnD3D11ResizedSwapChain(m_pd3dDevice, &pBackBufferSurfaceDesc);
+	m_HUD.SetLocation((pBackBufferSurfaceDesc.Width - 170) / 2, (pBackBufferSurfaceDesc.Height - 50) * 0.9f);
+	m_HUD.SetSize(170, 170);
+
 	m_font = new BitmapFont(this);
 	if (!m_font->Init("font.fnt"))
 	{
@@ -241,14 +258,19 @@ bool MyRender::Draw()
 		lantency->Draw(0.0f, 1.0f, 0.0f, 200.0f, 0.0f);
 	}
 
+	
+
 	TurnOffAlphaBlending();
 	TurnZBufferOn();
+
+	m_HUD.OnRender(10.0f);
 
 	return m_CloseApp;
 }
 
 void MyRender::Close()
 {
+	m_DialogResourceManager.OnD3D11DestroyDevice();
 	// Если network был включен то очищаю объект network.
 	if (NETWORK_ENABLED)
 	{
