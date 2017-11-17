@@ -12,6 +12,8 @@ public:
 	bool KeyPressed(const KeyEvent &arg);
 	bool KeyReleased(const KeyEvent &arg);
 	bool MouseMove(const MouseEvent &arg);
+	bool MousePressed(const MouseEventClick &arg);
+	bool MouseReleased(const MouseEventClick &arg);
 
 private:
 	MyRender *m_render;

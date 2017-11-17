@@ -319,3 +319,12 @@ inline void DXUT_SetDebugName(ID3D11DeviceChild* pObj, const CHAR* pstrName)
 #endif
 
 DXGI_FORMAT MAKE_SRGB(DXGI_FORMAT format);
+
+inline int RectWidth(RECT &rc)
+{
+	return ((rc).right - (rc).left);
+}
+inline int RectHeight(RECT &rc)
+{
+	return ((rc).bottom - (rc).top);
+}

@@ -1,5 +1,6 @@
 //#include "Dialog.h"
-#include "Button.h"
+//#include "Button.h"
+#include "RadioButton.h"
 
 void DrawText11DXUT(ID3D11Device *pd3dDevice, ID3D11DeviceContext *pd3d11DeviceContext,
 	LPCWSTR strText, RECT rcScreen, D3DXCOLOR vFontColor,
@@ -1015,6 +1016,70 @@ bool Dialog::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return bHandled;
 }
 
+bool Dialog::MouseMsgProc(UINT uMsg, INT x, INT y)
+{
+	bool bHandled = false;
+
+	// Если диалог не видимый то выходим
+	if (!m_bVisible)
+		return false;
+
+	// Если не принимаем ввод мыши то выходим
+	if (!m_bMouseInput)
+		return false;
+
+	POINT mousePoint = { short(x), short(y) };
+	mousePoint.x -= m_x;
+	mousePoint.y -= m_y;
+
+	// Если есть заголовок то сдвигаем Y координату
+	if (m_bCaption)
+		mousePoint.y -= m_nCaptionHeight;
+
+	// Если этот элемент управления находится в фокусе, и он пренадлежит этому диалогу, и он включен то передаю сообщение ему
+	if (s_pControlFocus && s_pControlFocus->m_pDialog == this && s_pControlFocus->GetEnabled())
+	{
+		if (s_pControlFocus->HandleMouse(uMsg, mousePoint))
+			return true;
+	}
+
+	// Смотрим какой элемент находится под курсором
+	Control *pControl = GetControlAtPoint(mousePoint);
+	if (pControl != NULL && pControl->GetEnabled())
+	{
+		bHandled = pControl->HandleMouse(uMsg, mousePoint);
+		if (bHandled)
+			return true;
+	}
+	else
+	{
+		// Курсор потерял фокус, убераю фокус с элемента управления
+		if (uMsg == WM_LBUTTONDOWN && s_pControlFocus && s_pControlFocus->m_pDialog == this)
+		{
+			s_pControlFocus->OnFocusOut();
+			s_pControlFocus = NULL;
+		}
+	}
+
+	switch (uMsg)
+	{
+		case WM_MOUSEMOVE:
+		{
+			OnMouseMove(mousePoint);
+			//printf("%d - %d\n", mousePoint.x, mousePoint.y);
+			return false;
+		}
+		/*case WM_LBUTTONDOWN:
+		case WM_LBUTTONDBLCLK:
+		case WM_LBUTTONUP:
+		{
+			break;
+		}*/
+	}
+
+	return false;
+}
+
 HRESULT Dialog::AddStatic(int ID, LPCWSTR strText, int x, int y, int width, int height, bool bIsDefault, Static ** ppCreated)
 {
 	HRESULT hr = S_OK;
@@ -1059,6 +1124,61 @@ HRESULT Dialog::AddButton(int ID, LPCWSTR strText, int x, int y, int width, int 
 	pButton->SetSize(width, height);
 	pButton->SetHotkey(nHotkey);
 	pButton->m_bIsDefault = bIsDefault;
+
+	return S_OK;
+}
+
+HRESULT Dialog::AddCheckBox(int ID, LPCWSTR strText, int x, int y, int width, int height, bool bChecked, UINT nHotkey, bool bIsDefault, CheckBox ** ppCreated)
+{
+	HRESULT hr = S_OK;
+
+	CheckBox *pCheckBox = new CheckBox(this);
+
+	if (ppCreated != NULL)
+		*ppCreated = pCheckBox;
+
+	if (pCheckBox == NULL)
+		return E_OUTOFMEMORY;
+
+	hr = AddControl(pCheckBox);
+	if (FAILED(hr))
+		return hr;
+
+	pCheckBox->SetID(ID);
+	pCheckBox->SetText(strText);
+	pCheckBox->SetLocation(x, y);
+	pCheckBox->SetSize(width, height);
+	pCheckBox->SetHotkey(nHotkey);
+	pCheckBox->m_bIsDefault = bIsDefault;
+	pCheckBox->SetChecked(bChecked);
+
+	return S_OK;
+}
+
+HRESULT Dialog::AddRadioButton(int ID, UINT nButtonGroup, LPCWSTR strText, int x, int y, int width, int height, bool bChecked, UINT nHotkey, bool bIsDefault, RadioButton ** ppCreated)
+{
+	HRESULT hr = S_OK;
+
+	RadioButton *pRadioButton = new RadioButton(this);
+
+	if (ppCreated != NULL)
+		*ppCreated = pRadioButton;
+
+	if (pRadioButton == NULL)
+		return E_OUTOFMEMORY;
+
+	hr = AddControl(pRadioButton);
+	if (FAILED(hr))
+		return hr;
+
+	pRadioButton->SetID(ID);
+	pRadioButton->SetText(strText);
+	pRadioButton->SetButtonGroup(nButtonGroup);
+	pRadioButton->SetLocation(x, y);
+	pRadioButton->SetSize(width, height);
+	pRadioButton->SetHotkey(nHotkey);
+	pRadioButton->SetChecked(bChecked);
+	pRadioButton->m_bIsDefault = bIsDefault;
 
 	return S_OK;
 }
@@ -1176,6 +1296,23 @@ void Dialog::SetControlEnabled(int ID, bool bEnabled)
 	pControl->SetEnabled(bEnabled);
 }
 
+void Dialog::ClearRadioButtonGroup(UINT nButtonGroup)
+{
+	// Ищу все radio buttons в данной группе
+	for (int i = 0; i < m_Controls.GetSize(); i++)
+	{
+		Control *pControl = m_Controls.GetAt(i);
+
+		if (pControl->GetType() == DXUT_CONTROL_RADIOBUTTON)
+		{
+			RadioButton *pRadioButton = (RadioButton*)pControl;
+
+			if (pRadioButton->GetButtonGroup() == nButtonGroup)
+				pRadioButton->SetChecked(false, false);
+		}
+	}
+}
+
 HRESULT Dialog::SetDefaultElement(UINT nControlType, UINT iElement, Element *pElement)
 {
 	// Если данный элемент есть в списке то просто его обновляю
@@ -1260,7 +1397,7 @@ void DrawText11DXUT(ID3D11Device *pd3dDevice, ID3D11DeviceContext *pd3d11DeviceC
 	LPCWSTR strText, RECT rcScreen, D3DXCOLOR vFontColor,
 	float fBBWidth, float fBBHeight, bool bCenter)
 {
-	float fCharTextSizeX = 0.010526315f;
+	float fCharTextSizeX = 0.010526315f;//сдвиг в лево по картинке с буквами
 	float fGlyphSizeX = 15.0f / fBBWidth;
 	float fGlyphSizeY = 42.0f / fBBHeight;
 
@@ -1296,10 +1433,10 @@ void DrawText11DXUT(ID3D11Device *pd3dDevice, ID3D11DeviceContext *pd3d11DeviceC
 
 			continue;
 		}
-		else if (strText[i] < 32 || strText[i] > 126)
+		/*else if (strText[i] < 32 || strText[i] > 126)
 		{
 			continue;
-		}
+		}*/
 
 		// добавляю 6 спрайт вершин
 		DXUTSpriteVertex SpriteVertex;
@@ -1404,7 +1541,7 @@ HRESULT InitFont11(ID3D11Device *pd3d11Device, ID3D11InputLayout *pInputLayout)
 	WCHAR str[MAX_PATH];
 	// Поиск существования файла по заданному пути, но я пока что не буду искать
 	//V_RETURN(DXUTFindDXSDKMediaFileCch(str, MAX_PATH, L"UI\\Font.dds"));
-	wcscpy_s(str, MAX_PATH, L"Font.dds");
+	wcscpy_s(str, MAX_PATH, L"UI\\Font.dds");
 
 	if (pd3d11Device->GetFeatureLevel() < D3D_FEATURE_LEVEL_10_0)
 	{

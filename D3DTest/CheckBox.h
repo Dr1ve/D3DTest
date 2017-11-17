@@ -1,29 +1,37 @@
 #pragma once
 
 #include "Misc.h"
-#include "Static.h"
-#include "Dialog.h"
+#include "Button.h"
+//#include "Dialog.h"
 
 //-------------------------------------------------------------------
-// Элемент управления Кнопка
+// Элемент управления CheckBox
 //-------------------------------------------------------------------
-class Button : public Static
+class CheckBox : public Button
 {
 public:
-	Button(Dialog *pDialog = NULL);
+	CheckBox(Dialog *pDialog = NULL);
+
 	virtual bool HandleKeyboard(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	virtual bool HandleMouse(UINT uMsg, POINT pt/*, WPARAM wParam, LPARAM lParam*/);
 	virtual void OnHotkey()
 	{
 		if (m_pDialog->IsKeyboardInputEnabled()) m_pDialog->RequestFocus(this);
-		m_pDialog->SendEvent(EVENT_BUTTON_CLICKED, true, this);
+		SetCheckedInternal(!m_bChecked, true);
 	}
 
-	virtual BOOL ContainsPoint(POINT pt) { return PtInRect(&m_rcBoundingBox, pt); }
-	virtual bool CanHaveFocus() { return (m_bVisible && m_bEnabled); }
+	virtual BOOL ContainsPoint(POINT pt);
+	virtual void UpdateRects();
 
 	virtual void Render(float fElapsedTime);
 
+	bool GetChecked() { return m_bChecked; }
+	void SetChecked(bool bChecked) { SetCheckedInternal(bChecked, false); }
+
 protected:
-	bool m_bPressed;
+	bool m_bChecked;
+	RECT m_rcButton;
+	RECT m_rcText;
+
+	virtual void SetCheckedInternal(bool bChecked, bool bFromInput);
 };

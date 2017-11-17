@@ -69,6 +69,12 @@
     <ClInclude Include="Button.h">
       <Filter>GUI</Filter>
     </ClInclude>
+    <ClInclude Include="CheckBox.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="RadioButton.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyRender.cpp">
@@ -120,6 +126,12 @@
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="Button.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckBox.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="RadioButton.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
   </ItemGroup>

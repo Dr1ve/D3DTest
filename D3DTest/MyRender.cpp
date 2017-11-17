@@ -30,7 +30,12 @@ bool MyRender::Init()
 		return false;
 	}
 	
-	m_HUD.AddButton(1, L"Toggle full screen", 0, 0, 170, 50);
+	m_HUD.AddButton(1, L"xxXXToggle full screen", 0, 0, 170, 50);
+	m_HUD.AddCheckBox(2, L"asdfasdfasdf", 0, 55, 100, 20);
+	m_HUD.AddRadioButton(3, 1, L"text", 0, 80, 20, 20, true);
+	m_HUD.AddRadioButton(4, 1, L"text1", 0, 100, 20, 20);
+	m_HUD.AddRadioButton(5, 1, L"text2", 0, 120, 20, 20);
+	m_HUD.AddRadioButton(6, 1, L"text3", 0, 140, 20, 20);
 	DXGI_SURFACE_DESC pBackBufferSurfaceDesc;
 	pBackBufferSurfaceDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	pBackBufferSurfaceDesc.Height = m_height;
@@ -38,7 +43,7 @@ bool MyRender::Init()
 	pBackBufferSurfaceDesc.SampleDesc.Count = 1;
 	pBackBufferSurfaceDesc.SampleDesc.Quality = 0;
 	m_DialogResourceManager.OnD3D11ResizedSwapChain(m_pd3dDevice, &pBackBufferSurfaceDesc);
-	m_HUD.SetLocation((pBackBufferSurfaceDesc.Width - 170) / 2, (pBackBufferSurfaceDesc.Height - 50) * 0.9f);
+	m_HUD.SetLocation((pBackBufferSurfaceDesc.Width - 170) / 2, (pBackBufferSurfaceDesc.Height - 50) * 0.2f);
 	m_HUD.SetSize(170, 170);
 
 	m_font = new BitmapFont(this);
@@ -263,7 +268,7 @@ bool MyRender::Draw()
 	TurnOffAlphaBlending();
 	TurnZBufferOn();
 
-	m_HUD.OnRender(10.0f);
+	m_HUD.OnRender(m_timer.GetTime());
 
 	return m_CloseApp;
 }

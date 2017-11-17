@@ -39,7 +39,7 @@ public:
 	// Сообщения приложения
 	virtual bool MsgProc(UINT uMsg, WPARAM wParam, LPARAM lParam) { return false; }
 	virtual bool HandleKeyboard(UINT uMsg, WPARAM wParam, LPARAM lParam) { return false; }
-	virtual bool HandleMouse(UINT uMsg, POINT pt, WPARAM wParam, LPARAM lParam) { return false; }
+	virtual bool HandleMouse(UINT uMsg, POINT pt/*, WPARAM wParam, LPARAM lParam*/) { return false; }
 	virtual bool CanHaveFocus() { return false; }
 	virtual void OnFocusIn() { m_bHasFocus = true; }
 	virtual void OnFocusOut() { m_bHasFocus = false; }

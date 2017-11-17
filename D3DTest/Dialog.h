@@ -10,6 +10,8 @@
 class Control;
 class Static;
 class Button;
+class CheckBox;
+class RadioButton;
 
 typedef VOID(CALLBACK*PCALLBACKDXUTGUIEVENT)(UINT nEvent, int nControlID, Control* pControl, void* pUserContext);
 
@@ -58,10 +60,13 @@ public:
 
 	// Сообщения окна
 	bool MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	bool MouseMsgProc(UINT uMsg, INT x, INT y);
 
 	// Создание элемента управления
 	HRESULT AddStatic(int ID, LPCWSTR strText, int x, int y, int width, int height, bool bIsDefault = false, Static **ppCreated = NULL);
 	HRESULT AddButton(int ID, LPCWSTR strText, int x, int y, int width, int height, UINT nHotkey = 0, bool bIsDefault = false, Button **ppCreated = NULL);
+	HRESULT AddCheckBox(int ID, LPCWSTR strText, int x, int y, int width, int height, bool bChecked = false, UINT nHotkey = 0, bool bIsDefault = false, CheckBox **ppCreated = NULL);
+	HRESULT AddRadioButton(int ID, UINT nButtonGroup, LPCWSTR strText, int x, int y, int width, int height, bool bChecked = false, UINT nHotkey = 0, bool bIsDefault = false, RadioButton **ppCreated = NULL);
 	// Еще элементы управления
 	HRESULT AddControl(Control *pControl);
 	HRESULT InitControl(Control *pControl);
@@ -69,6 +74,8 @@ public:
 	// Поиск элемента управления
 	Static *GetStatic(int ID) { return (Static*)GetControl(ID, DXUT_CONTROL_STATIC); }
 	Button *GetButton(int ID) { return (Button*)GetControl(ID, DXUT_CONTROL_BUTTON); }
+	CheckBox *GetCheckBox(int ID) { return (CheckBox*)GetControl(ID, DXUT_CONTROL_CHECKBOX); }
+	RadioButton *GetRadioButton(int ID) { return (RadioButton*)GetControl(ID, DXUT_CONTROL_RADIOBUTTON); }
 
 	Control *GetControl(int ID);
 	Control *GetControl(int ID, UINT nControlType);
@@ -77,7 +84,7 @@ public:
 	bool GetControlEnabled(int ID);
 	void SetControlEnabled(int ID, bool bEnabled);
 
-	//void ClearRadioButtonGroup(UINT nGroup);
+	void ClearRadioButtonGroup(UINT nButtonGroup);
 	//void ClearComboBox(int ID);
 
 	// Доступ к стандартным элементам на дисплее для добавления новых элементов

@@ -74,5 +74,48 @@ bool MyInput::KeyReleased(const KeyEvent &arg)
 bool MyInput::MouseMove(const MouseEvent &arg)
 {
 	//printf("%d - %d\n", arg.x, arg.y);
-	return false;
+	return m_render->m_HUD.MouseMsgProc(WM_MOUSEMOVE, arg.x, arg.y);
+}
+
+// кнопка нажата
+bool MyInput::MousePressed(const MouseEventClick &arg) 
+{ 
+	switch (arg.btn)
+	{
+		case MOUSE_LEFT:
+		{
+			return m_render->m_HUD.MouseMsgProc(WM_LBUTTONDOWN, arg.x, arg.y);
+		}
+		case MOUSE_RIGHT:
+		{
+			return m_render->m_HUD.MouseMsgProc(WM_RBUTTONDOWN, arg.x, arg.y);
+		}
+		default:
+		{
+			return m_render->m_HUD.MouseMsgProc(WM_MBUTTONDOWN, arg.x, arg.y);
+		}
+	}
+	
+	return false; 
+}
+// кнопка отпущена
+bool MyInput::MouseReleased(const MouseEventClick &arg) 
+{ 
+	switch (arg.btn)
+	{
+		case MOUSE_LEFT:
+		{
+			return m_render->m_HUD.MouseMsgProc(WM_LBUTTONUP, arg.x, arg.y);
+		}
+		case MOUSE_RIGHT:
+		{
+			return m_render->m_HUD.MouseMsgProc(WM_RBUTTONUP, arg.x, arg.y);
+		}
+		default:
+		{
+			return m_render->m_HUD.MouseMsgProc(WM_MBUTTONUP, arg.x, arg.y);
+		}
+	}
+
+	return false; 
 }

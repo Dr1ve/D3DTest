@@ -9,7 +9,7 @@ Button::Button(Dialog * pDialog)
 	m_nHotkey = 0;
 }
 
-bool Button::HandleMouse(UINT uMsg, POINT pt, WPARAM wParam, LPARAM lParam)
+bool Button::HandleMouse(UINT uMsg, POINT pt/*, WPARAM wParam, LPARAM lParam*/)
 {
 	if (!m_bEnabled || !m_bVisible)
 		return false;
@@ -39,7 +39,7 @@ bool Button::HandleMouse(UINT uMsg, POINT pt, WPARAM wParam, LPARAM lParam)
 			if (m_bPressed)
 			{
 				m_bPressed = false;
-				ReleaseCapture();
+				//ReleaseCapture();
 
 				if (!m_pDialog->m_bKeyboardInput)
 					m_pDialog->ClearFocus();
